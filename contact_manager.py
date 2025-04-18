@@ -3,11 +3,11 @@ import pandas as pd, re, os
 class ContactManager:
     def __init__(self, filename='contacts.csv'):
         self.filename = filename
-        self.contacts = pd.DataFrame(columns=['Contact_Id', 'Name', 'Phone', 'Email'])
+        self.contacts = []
         self.load_contacts()
 
-    def dipslay_contacts(self):
-        print(self.contacts)
+    def display_contacts(self):
+        print(pd.DataFrame(self.contacts))
 
     def load_contacts(self):
         if os.path.exists(self.filename):
@@ -32,7 +32,7 @@ class ContactManager:
             return
         
         for contact in self.contacts:
-            if contact["Name"] == name or contact["Phone"] == phone:
+            if contact["Phone"] == phone:
                 print("Contact already exists.")
                 return
 
@@ -59,11 +59,11 @@ class ContactManager:
         print("Contact not found.")
 
     def delete_contact(self):
-        name= input("Enter name to delete: ")
+        name = input("Enter name to delete: ")
 
         for i, contact in enumerate(self.contacts):
             if contact["Name"].lower() == name.lower():
-                confirm = input(f"Are you sure you want to delete {contact["Name"]}? (yes/no): ")
+                confirm = input(f"Are you sure you want to delete {contact['Name']}? (yes/no): ")
                 if confirm.lower() == 'yes':
                     del self.contacts[i]
                     self.save_contacts()
@@ -90,7 +90,7 @@ if __name__ == "__main__":
         elif choice == '3':
             manager.delete_contact()
         elif choice == '4':
-            manager.dipslay_contacts()
+            manager.display_contacts()
         elif choice == '5':
             print("Exiting...")
             break
